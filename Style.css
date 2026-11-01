@@ -5,13 +5,9 @@
 
 :root {
     --primary: #581c87;
-    /* Deep Plum */
     --primary-dark: #3b0764;
-    /* Darker Plum */
     --primary-text: #4c1d95;
-    /* Rich Plum Text */
     --primary-soft: #f3e8ff;
-    /* Soft Lavender/Plum Tint */
     --glow: rgba(88, 28, 135, 0.3);
     --absent: #dc2626;
     --present: #16a34a;
@@ -192,10 +188,6 @@ button {
     box-shadow: 0 0 0 4px rgba(88, 28, 135, 0.15);
 }
 
-.form-field input.invalid {
-    border-color: var(--absent);
-}
-
 .form-actions {
     margin-top: 18px;
 }
@@ -222,52 +214,45 @@ button {
     transform: scale(0.98);
 }
 
-.status-message {
-    margin-top: 15px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    line-height: 1.5;
-}
-
-.status-message:empty {
-    display: none;
-}
-
-.status-message.error {
-    color: var(--absent);
-}
-
-.status-message.success {
-    color: var(--present);
-}
-
-/* ================= Task list ================= */
+/* ================= Task list & Items ================= */
 .task-list {
     list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.task {
+.task-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 14px;
     padding: 14px 16px;
-    margin-bottom: 10px;
     border: 1px solid var(--border);
     border-radius: 18px;
     background: #fff;
     transition: background 0.2s, border-color 0.2s;
 }
 
-.task:hover {
+.task-item:hover {
     background: #faf5ff;
 }
 
-.task.done {
+.task-item.completed {
     background: #f0fdf4;
     border-color: #bbf7d0;
 }
 
-.task input[type="checkbox"] {
+.task-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+}
+
+.task-checkbox {
     width: 22px;
     height: 22px;
     flex-shrink: 0;
@@ -275,47 +260,64 @@ button {
     cursor: pointer;
 }
 
-.task-body {
-    flex: 1;
-    min-width: 0;
-}
-
 .task-title {
     display: block;
     font-size: 0.95rem;
     font-weight: 600;
     overflow-wrap: anywhere;
-    cursor: pointer;
+    flex: 1;
 }
 
-.task.done .task-title {
+.task-item.completed .task-title {
     text-decoration: line-through;
     color: var(--muted);
 }
 
-.badge {
+.task-subject {
     display: inline-block;
-    margin-top: 6px;
     padding: 4px 11px;
     border-radius: 999px;
     background: var(--primary-soft);
     color: var(--primary-text);
     font-size: 0.72rem;
     font-weight: 700;
-    overflow-wrap: anywhere;
+    flex-shrink: 0;
 }
 
-.task.done .badge {
+.task-item.completed .task-subject {
     background: #dcfce7;
     color: #15803d;
 }
 
-.delete-btn {
+/* ================= Action Buttons & Inline Edit ================= */
+.task-actions {
+    display: flex;
+    gap: 8px;
     flex-shrink: 0;
-    min-height: 40px;
-    padding: 0 16px;
+}
+
+.btn-edit {
+    min-height: 38px;
+    padding: 0 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--primary-text);
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-edit:hover {
+    background: var(--primary-soft);
+}
+
+.delete-btn,
+.btn-delete {
+    min-height: 38px;
+    padding: 0 14px;
     border: 1.5px solid #fecaca;
-    border-radius: 14px;
+    border-radius: 12px;
     background: #fff;
     color: #b91c1c;
     font-size: 0.8rem;
@@ -323,8 +325,41 @@ button {
     transition: background 0.2s;
 }
 
-.delete-btn:hover {
+.delete-btn:hover,
+.btn-delete:hover {
     background: #fee2e2;
+}
+
+.edit-input {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    outline: none;
+    width: 60%;
+    margin-right: 8px;
+}
+
+.btn-save {
+    background: var(--present);
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    background: var(--muted);
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .empty-message {
@@ -335,11 +370,7 @@ button {
     line-height: 1.6;
 }
 
-.empty-message[hidden] {
-    display: none;
-}
-
-/* ================= Login Overlay & Card Styles ================= */
+/* ================= Login Overlay Styles ================= */
 .login-overlay {
     position: fixed;
     top: 0;
@@ -438,11 +469,7 @@ button {
         padding: 18px;
     }
 
-    .task {
+    .task-item {
         flex-wrap: wrap;
-    }
-
-    .delete-btn {
-        margin-left: 36px;
     }
 }

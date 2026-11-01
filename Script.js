@@ -1,6 +1,6 @@
 // --- SUPABASE CONFIGURATION ---
-const SUPABASE_URL = 'https://wyxvinnmwuiwznptool.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5eHZpbm5td3VpdXd6bnB0b29sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NjQ4MzgsImV4cCI6MjEwOTA0MDgzOH0.tYNect2Z_SQmdUGnvrur6VbHmFu4idaru0CEj0D2OwA'; // Replace with your actual anon key
+const SUPABASE_URL = 'https://wyxvinnmwuiuwznptool.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5eHZpbm5td3VpdXd6bnB0b29sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NjQ4MzgsImV4cCI6MjEwOTA0MDgzOH0.tYNect2Z_SQmdUGnvrur6VbHmFu4idaru0CEj0D2OwA'; // Replace with your actual Supabase anon key
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -9,49 +9,56 @@ let tasks = [];
 let currentUser = localStorage.getItem('taskfocus_user') || '';
 
 // --- DOM ELEMENTS ---
-const loginScreen = document.getElementById('login-screen');
-const appScreen = document.getElementById('app-screen');
-const usernameInput = document.getElementById('username-input');
-const loginBtn = document.getElementById('login-btn');
-const currentUserDisplay = document.getElementById('current-user-display');
-const logoutBtn = document.getElementById('logout-btn');
+const loginOverlay = document.getElementById('loginOverlay');
+const authForm = document.getElementById('authForm');
+const authUsername = document.getElementById('authUsername');
+const appContainer = document.getElementById('appContainer');
+const displayUsername = document.getElementById('displayUsername');
+const logoutBtn = document.getElementById('logoutBtn');
 
-const taskForm = document.getElementById('task-form');
-const titleInput = document.getElementById('title-input');
-const subjectInput = document.getElementById('subject-input');
-const taskList = document.getElementById('task-list');
+const taskForm = document.getElementById('taskForm');
+const taskTitle = document.getElementById('taskTitle');
+const taskSubject = document.getElementById('taskSubject');
+const taskList = document.getElementById('taskList');
+const todayDate = document.getElementById('todayDate');
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
+    if (todayDate) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        todayDate.textContent = new Date().toLocaleDateString(undefined, options);
+    }
+
     if (currentUser) {
         showAppScreen();
     } else {
         showLoginScreen();
     }
 
-    if (loginBtn) {
-        loginBtn.addEventListener('click', handleLogin);
-    }
-    if (usernameInput) {
-        usernameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleLogin();
+    if (authForm) {
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleLogin();
         });
     }
+
     if (logoutBtn) {
         logoutBtn.addEventListener('click', handleLogout);
     }
+
     if (taskForm) {
         taskForm.addEventListener('submit', handleTaskSubmit);
     }
+
     if (taskList) {
         taskList.addEventListener('click', handleTaskListClick);
     }
 });
 
 function handleLogin() {
-    const name = usernameInput.value.trim();
+    const name = authUsername.value.trim();
     if (!name) {
-        alert('Please enter a username.');
+        alert('Please enter your name.');
         return;
     }
     currentUser = name;
@@ -66,15 +73,15 @@ function handleLogout() {
 }
 
 function showLoginScreen() {
-    if (loginScreen) loginScreen.style.display = 'block';
-    if (appScreen) appScreen.style.display = 'none';
-    if (usernameInput) usernameInput.value = '';
+    if (loginOverlay) loginOverlay.style.display = 'flex';
+    if (appContainer) appContainer.style.display = 'none';
+    if (authUsername) authUsername.value = '';
 }
 
 function showAppScreen() {
-    if (loginScreen) loginScreen.style.display = 'none';
-    if (appScreen) appScreen.style.display = 'block';
-    if (currentUserDisplay) currentUserDisplay.textContent = currentUser;
+    if (loginOverlay) loginOverlay.style.display = 'none';
+    if (appContainer) appContainer.style.display = 'flex';
+    if (displayUsername) displayUsername.textContent = currentUser;
     fetchTasks();
 }
 
@@ -88,7 +95,7 @@ async function fetchTasks() {
     const { data, error } = await supabaseClient
         .from('Tasks')
         .select('*')
-        .eq('username', currentUser) // Filters tasks by current logged-in user
+        .eq('username', currentUser)
         .order('id', { ascending: false });
 
     if (error) {
@@ -105,8 +112,8 @@ async function fetchTasks() {
 
 async function handleTaskSubmit(e) {
     e.preventDefault();
-    const title = titleInput.value.trim();
-    const subject = subjectInput.value.trim() || 'General';
+    const title = taskTitle.value.trim();
+    const subject = taskSubject.value.trim() || 'General';
 
     if (!title) return;
 
@@ -115,7 +122,7 @@ async function handleTaskSubmit(e) {
         title: title,
         subject: subject,
         done: false,
-        username: currentUser // Saves task tied to the user
+        username: currentUser
     };
 
     const { error } = await supabaseClient
@@ -128,8 +135,8 @@ async function handleTaskSubmit(e) {
         return;
     }
 
-    titleInput.value = '';
-    subjectInput.value = '';
+    taskTitle.value = '';
+    taskSubject.value = '';
     fetchTasks();
 }
 
@@ -168,6 +175,7 @@ async function toggleTaskDone(taskId, currentDoneStatus) {
 
 function startEditing(taskItem, taskId) {
     const titleSpan = taskItem.querySelector('.task-title');
+    if (!titleSpan) return;
     const currentTitle = titleSpan.textContent;
 
     titleSpan.innerHTML = `
