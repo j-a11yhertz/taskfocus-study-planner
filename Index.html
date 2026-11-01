@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFocus - Study Planner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <!-- Simple Name Input Overlay (In-scope username greeting) -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-card">
+            <div class="app-icon-badge">TF</div>
+            <div class="brand">Task<span>Focus</span></div>
+            <p class="muted" style="margin-bottom: 20px;">Enter your name to start planning your studies.</p>
+
+            <form id="authForm" novalidate>
+                <div class="form-field" style="margin-bottom: 20px; text-align: left;">
+                    <label for="authUsername" style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 8px;">Your Name</label>
+                    <input type="text" id="authUsername" placeholder="e.g. Alex" maxlength="30" autocomplete="off" required style="width: 100%; min-height: 52px; padding: 0 18px; border: 1px solid var(--border); border-radius: 16px; outline: none; background: #fff; color: var(--text); font-size: 0.95rem;">
+                </div>
+
+                <button type="submit" class="primary-btn">Start Planning</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App Container (Hidden until name is entered) -->
+    <div class="layout" id="appContainer" style="display: none;">
+
+        <aside class="sidebar">
+
+            <div class="brand">Task<span>Focus</span></div>
+
+            <p class="sidebar-label">Show tasks</p>
+
+            <nav class="filters" aria-label="Filter tasks">
+                <button type="button" class="nav-link active" data-filter="all">All tasks</button>
+                <button type="button" class="nav-link" data-filter="incomplete">Incomplete</button>
+                <button type="button" class="nav-link" data-filter="completed">Completed</button>
+            </nav>
+
+            <div style="margin-top: 40px; padding: 0 10px;">
+                <button type="button" id="logoutBtn" class="delete-btn" style="width: 100%; background: #fee2e2;">Change User</button>
+            </div>
+
+        </aside>
+
+        <main class="main">
+
+            <header class="topbar" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <h1>My TaskFocus Planner</h1>
+                    <p class="muted" id="todayDate"></p>
+                </div>
+                <div class="user-welcome" style="font-weight: 600; color: var(--text); background: var(--primary-soft); padding: 8px 16px; border-radius: 14px; font-size: 0.9rem;">
+                    Hello, <span id="displayUsername" style="color: var(--primary-text);">User</span>!
+                </div>
+            </header>
+
+            <div class="notice">
+                Add the things you need to study, tick them off when they are
+                done, and your list will still be here when you come back.
+            </div>
+
+            <section class="panel" id="addTask">
+
+                <div class="panel-header">
+                    <h2>Add a Task</h2>
+                </div>
+
+                <form id="taskForm" novalidate>
+
+                    <div class="form-grid">
+
+                        <div class="form-field">
+                            <label for="taskTitle">Task title</label>
+                            <input
+                                type="text"
+                                id="taskTitle"
+                                placeholder="e.g. Revise chapter 4"
+                                maxlength="100"
+                                autocomplete="off">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="taskSubject">Subject or course</label>
+                            <input
+                                type="text"
+                                id="taskSubject"
+                                placeholder="e.g. Programming Fundamentals"
+                                maxlength="50"
+                                autocomplete="off">
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="primary-btn">Add Task</button>
+                    </div>
+
+                    <p id="formMessage" class="status-message" role="status" aria-live="polite"></p>
+
+                </form>
+
+            </section>
+
+            <section class="panel" id="tasks">
+
+                <div class="panel-header">
+                    <h2 id="listHeading">All Tasks</h2>
+                </div>
+
+                <ul id="taskList" class="task-list"></ul>
+
+                <p id="emptyMessage" class="empty-message" hidden></p>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

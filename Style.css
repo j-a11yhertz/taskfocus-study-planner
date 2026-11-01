@@ -1,0 +1,448 @@
+/* ====================================
+   TASKFOCUS STYLES (DEEP PLUM THEME)
+   Inter font, rounded white cards, deep plum accent
+   ==================================== */
+
+:root {
+    --primary: #581c87;
+    /* Deep Plum */
+    --primary-dark: #3b0764;
+    /* Darker Plum */
+    --primary-text: #4c1d95;
+    /* Rich Plum Text */
+    --primary-soft: #f3e8ff;
+    /* Soft Lavender/Plum Tint */
+    --glow: rgba(88, 28, 135, 0.3);
+    --absent: #dc2626;
+    --present: #16a34a;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --bg: #f5f5f5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ================= Sidebar ================= */
+.sidebar {
+    width: 250px;
+    background: var(--primary);
+    color: #fff;
+    padding: 28px 18px;
+    flex-shrink: 0;
+}
+
+.brand {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 35px;
+}
+
+.brand span {
+    color: #e9d5ff;
+}
+
+.sidebar-label {
+    color: #e9d5ff;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 20px 10px 12px;
+}
+
+.nav-link {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: #fff;
+    padding: 13px 14px;
+    border-radius: 14px;
+    margin-bottom: 7px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.nav-link.active {
+    background: #fff;
+    color: var(--primary-text);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+}
+
+/* ================= Main area ================= */
+.main {
+    flex: 1;
+    min-width: 0;
+    padding: 32px;
+    max-width: 1000px;
+}
+
+.topbar {
+    margin-bottom: 30px;
+}
+
+.topbar h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 7px;
+}
+
+.muted {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.notice {
+    padding: 16px 18px;
+    background: var(--primary-soft);
+    border-radius: 18px;
+    color: var(--primary-text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 22px;
+}
+
+/* ================= Panels ================= */
+.panel {
+    background: #fff;
+    border-radius: 24px;
+    padding: 26px;
+    margin-bottom: 24px;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+    border: 1px solid var(--border);
+}
+
+.panel-header {
+    margin-bottom: 20px;
+}
+
+.panel h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+/* ================= Form ================= */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px;
+}
+
+.form-field label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.form-field input {
+    width: 100%;
+    min-height: 52px;
+    padding: 0 16px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    outline: none;
+    background: #fff;
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-field input::placeholder {
+    color: #8b95a7;
+}
+
+.form-field input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(88, 28, 135, 0.15);
+}
+
+.form-field input.invalid {
+    border-color: var(--absent);
+}
+
+.form-actions {
+    margin-top: 18px;
+}
+
+.primary-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    min-height: 48px;
+    padding: 0 26px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    box-shadow: 0 10px 22px var(--glow);
+    transition: background 0.2s, transform 0.1s;
+    width: 100%;
+}
+
+.primary-btn:hover {
+    background: var(--primary-dark);
+}
+
+.primary-btn:active {
+    transform: scale(0.98);
+}
+
+.status-message {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.status-message:empty {
+    display: none;
+}
+
+.status-message.error {
+    color: var(--absent);
+}
+
+.status-message.success {
+    color: var(--present);
+}
+
+/* ================= Task list ================= */
+.task-list {
+    list-style: none;
+}
+
+.task {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: #fff;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.task:hover {
+    background: #faf5ff;
+}
+
+.task.done {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.task input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.task-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.task-title {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+.task.done .task-title {
+    text-decoration: line-through;
+    color: var(--muted);
+}
+
+.badge {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: var(--primary-soft);
+    color: var(--primary-text);
+    font-size: 0.72rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.task.done .badge {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.delete-btn {
+    flex-shrink: 0;
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1.5px solid #fecaca;
+    border-radius: 14px;
+    background: #fff;
+    color: #b91c1c;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.delete-btn:hover {
+    background: #fee2e2;
+}
+
+.empty-message {
+    text-align: center;
+    color: var(--muted);
+    padding: 26px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.empty-message[hidden] {
+    display: none;
+}
+
+/* ================= Login Overlay & Card Styles ================= */
+.login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.login-card {
+    background: #ffffff;
+    padding: 40px 35px;
+    border-radius: 28px;
+    box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+}
+
+.app-icon-badge {
+    width: 58px;
+    height: 58px;
+    background: linear-gradient(135deg, #7e22ce 0%, #581c87 100%);
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 18px;
+    margin: 0 auto 20px auto;
+    box-shadow: 0 10px 22px var(--glow);
+    font-style: italic;
+}
+
+.login-card .brand {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+}
+
+.login-card .brand span {
+    color: var(--primary);
+}
+
+/* ================= Smaller screens ================= */
+@media (max-width: 750px) {
+    .layout {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 18px;
+    }
+
+    .brand {
+        margin-bottom: 8px;
+    }
+
+    .sidebar-label {
+        margin-top: 12px;
+    }
+
+    .filters {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+    }
+
+    .nav-link {
+        margin-bottom: 0;
+        text-align: center;
+        padding: 12px 6px;
+        font-size: 0.82rem;
+    }
+
+    .main {
+        padding: 20px 15px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
+    .task {
+        flex-wrap: wrap;
+    }
+
+    .delete-btn {
+        margin-left: 36px;
+    }
+}
