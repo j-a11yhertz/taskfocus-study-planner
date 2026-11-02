@@ -1,5 +1,5 @@
 // --- SUPABASE CONFIGURATION ---
-const SUPABASE_URL = 'https://wyxvinnmwuiuwznptool.supabase.co/rest/v1/';
+const SUPABASE_URL = 'https://wyxvinnmwuiuwznptool.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5eHZpbm5td3VpdXd6bnB0b29sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NjQ4MzgsImV4cCI6MjEwOTA0MDgzOH0.tYNect2Z_SQmdUGnvrur6VbHmFu4idaru0CEj0D2OwA';
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
