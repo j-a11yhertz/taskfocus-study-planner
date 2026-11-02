@@ -1,12 +1,13 @@
 // --- SUPABASE CONFIGURATION ---
-const SUPABASE_URL = 'https://wyxvinnmwuiuwznptool.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5eHZpbm5td3VpdXd6bnB0b29sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NjQ4MzgsImV4cCI6MjEwOTA0MDgzOH0.tYNect2Z_SQmdUGnvrur6VbHmFu4idaru0CEj0D2OwA'; // Replace with your actual Supabase anon key
+const SUPABASE_URL = 'https://wyxvinnmwuiwznptool.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5eHZpbm5td3VpdXd6bnB0b29sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NjQ4MzgsImV4cCI6MjEwOTA0MDgzOH0.tYNect2Z_SQmdUGnvrur6VbHmFu4idaru0CEj0D2OwA';
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- STATE MANAGEMENT ---
 let tasks = [];
 let currentUser = localStorage.getItem('taskfocus_user') || '';
+let currentFilter = 'all'; // 'all', 'incomplete', 'completed'
 
 // --- DOM ELEMENTS ---
 const loginOverlay = document.getElementById('loginOverlay');
@@ -21,6 +22,8 @@ const taskTitle = document.getElementById('taskTitle');
 const taskSubject = document.getElementById('taskSubject');
 const taskList = document.getElementById('taskList');
 const todayDate = document.getElementById('todayDate');
+const filterButtons = document.querySelectorAll('.nav-link[data-filter]');
+const listHeading = document.getElementById('listHeading');
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -53,6 +56,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (taskList) {
         taskList.addEventListener('click', handleTaskListClick);
     }
+
+    // Filter button event listeners
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.filter;
+
+            if (listHeading) {
+                if (currentFilter === 'incomplete') listHeading.textContent = 'Incomplete Tasks';
+                else if (currentFilter === 'completed') listHeading.textContent = 'Completed Tasks';
+                else listHeading.textContent = 'All Tasks';
+            }
+            render();
+        });
+    });
 });
 
 function handleLogin() {
@@ -251,13 +270,20 @@ function escapeHtml(str) {
 function render() {
     if (!taskList) return;
 
-    if (tasks.length === 0) {
-        taskList.innerHTML = '<li class="empty-message">No study tasks found. Add one above!</li>';
+    // Filter tasks based on current selection
+    const filteredTasks = tasks.filter(task => {
+        if (currentFilter === 'incomplete') return !task.done;
+        if (currentFilter === 'completed') return task.done;
+        return true; // 'all'
+    });
+
+    if (filteredTasks.length === 0) {
+        taskList.innerHTML = `<li class="empty-message">No ${currentFilter !== 'all' ? currentFilter : ''} study tasks found.</li>`;
         return;
     }
 
     taskList.innerHTML = '';
-    tasks.forEach(task => {
+    filteredTasks.forEach(task => {
         const li = document.createElement('li');
         li.className = `task-item ${task.done ? 'completed' : ''}`;
         li.dataset.id = task.id;
